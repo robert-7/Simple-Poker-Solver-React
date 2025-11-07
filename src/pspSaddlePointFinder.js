@@ -3,7 +3,7 @@ import { findSaddlePoints as findSaddlePointsBase } from "./saddlePointFinderBas
 // Helper function to convert matrix to string for PSP strategy
 function matrixToString(valueMatrix) {
     let matrixStr = "";
-    let tempStr = ";"
+    let tempStr = "";
     for (const i in valueMatrix) {
         for (const j in valueMatrix[i]) {
             tempStr += valueMatrix[i][j].toString();
