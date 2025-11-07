@@ -27,7 +27,7 @@ function findSaddlePoints(var_ante, var_bet, var_cardRange) {
                     "%VALUE%": value(pure1, pure2).toString()
                 };
                 saddlePoints.push(saddlePoint);
-                console.log("(" + "(" + pure1 + ")" + "," + "(" + pure2 + ")" + ")" + " value = " + value(pure1, pure2));
+                console.log(`((${pure1}),(${pure2})) value = ${value(pure1, pure2)}`);
 
             }
             nextstrat(pure2);
