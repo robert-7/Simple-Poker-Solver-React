@@ -148,13 +148,13 @@ function newStrat() {
 }
 
 function valueMatrix() {
-    const valMat = new Array(cardRange);
+    const valMat = new Array(Math.pow(2, cardRange));
 
     let strati = newStrat();
     let stratj = newStrat();
 
     for (let i = 0; i < Math.pow(2, cardRange); i++) {
-        valMat[i] = new Array(cardRange);
+        valMat[i] = new Array(Math.pow(2, cardRange));
         for (let j = 0; j < Math.pow(2, cardRange); j++) {
             valMat[i][j] = value(strati, stratj);
             nextstrat(stratj);
