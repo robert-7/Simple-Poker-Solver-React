@@ -4,6 +4,8 @@ import { Form } from "react-bootstrap";
 import { ToggleButton } from "react-bootstrap";
 import { ToggleButtonGroup } from "react-bootstrap";
 import { Table } from "react-bootstrap";
+import { findSaddlePoints as findSaddlePointsBorel } from "./borelishSaddlePointFinder";
+import { findSaddlePoints as findSaddlePointsPSP } from "./pspSaddlePointFinder";
 
 class HandForm extends React.Component {
   constructor(props) {
@@ -31,8 +33,30 @@ class HandForm extends React.Component {
   }
 
   handleSubmit(event) {
-    // why should we have to disable something that should be auto-disabled?
     event.preventDefault();
+
+    // Choose the appropriate algorithm based on the radio button selection
+    // algorithm: 1 = Borel, 2 = von Neumann (PSP)
+    const findSaddlePoints = this.state.algorithm === 1
+      ? findSaddlePointsBorel
+      : findSaddlePointsPSP;
+
+    // Call findSaddlePoints with the current state values
+    const saddlePoints = findSaddlePoints(
+      this.state.anteValue,
+      this.state.betValue,
+      this.state.numCards
+    );
+
+    // Transform the results to match the table format
+    const formattedResults = saddlePoints.map((point) => ({
+      p1: point["%PURE1%"],
+      p2: point["%PURE2%"],
+      p1payoff: point["%VALUE%"]
+    }));
+
+    // Update the state with the new results
+    this.setState({ results: formattedResults });
   }
 
   setRadioValue(value) {

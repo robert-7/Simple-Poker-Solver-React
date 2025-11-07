@@ -13,3 +13,23 @@ repos:
       - id: markdownlint
         args: ['--style', '.markdownlint.rb']
         language_version: system
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.39.1
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$
+        types: [file]
+        args: ['--max-warnings=0']
+        additional_dependencies:
+          - eslint@8.57.1
+          - eslint-config-react-app@7.0.1
+          - '@babel/eslint-parser@7.28.5'
+          - '@typescript-eslint/eslint-plugin@5.62.0'
+          - '@typescript-eslint/parser@5.62.0'
+          - eslint-plugin-flowtype@8.0.3
+          - eslint-plugin-import@2.29.0
+          - eslint-plugin-jest@25.7.0
+          - eslint-plugin-jsx-a11y@6.7.1
+          - eslint-plugin-react@7.27.1
+          - eslint-plugin-react-hooks@4.3.0
+          - eslint-plugin-testing-library@5.0.1
