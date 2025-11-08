@@ -5,7 +5,7 @@ import { ToggleButton } from "react-bootstrap";
 import { ToggleButtonGroup } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 import { findSaddlePoints as findSaddlePointsBorel } from "./lib/borelishSaddlePointFinder";
-import { findSaddlePoints as findSaddlePointsPSP } from "./lib/vonNeumannSaddlePointFinder";
+import { findSaddlePoints as findSaddlePointsVonNeumann } from "./lib/vonNeumannSaddlePointFinder";
 
 class HandForm extends React.Component {
   constructor(props) {
@@ -36,10 +36,10 @@ class HandForm extends React.Component {
     event.preventDefault();
 
     // Choose the appropriate algorithm based on the radio button selection
-    // algorithm: 1 = Borel, 2 = von Neumann (PSP)
+    // algorithm: 1 = Borel, 2 = von Neumann
     const findSaddlePoints = this.state.algorithm === 1
       ? findSaddlePointsBorel
-      : findSaddlePointsPSP;
+      : findSaddlePointsVonNeumann;
 
     // Call findSaddlePoints with the current state values
     const saddlePoints = findSaddlePoints(
@@ -93,7 +93,7 @@ class HandForm extends React.Component {
                 onChange={this.setRadioValue}
               >
                 <ToggleButton id="tbg-radio-1" value={1}>
-                  Borel
+                  Borel (Currently Unavailable)
                 </ToggleButton>
                 <ToggleButton id="tbg-radio-2" value={2}>
                   von Neumann
