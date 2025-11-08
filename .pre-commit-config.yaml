@@ -33,3 +33,11 @@ repos:
           - eslint-plugin-react@7.27.1
           - eslint-plugin-react-hooks@4.3.0
           - eslint-plugin-testing-library@5.0.1
+  - repo: local
+    hooks:
+      - id: jest-tests
+        name: Run Jest tests
+        entry: npm test -- --watchAll=false --passWithNoTests
+        language: system
+        pass_filenames: false
+        always_run: true

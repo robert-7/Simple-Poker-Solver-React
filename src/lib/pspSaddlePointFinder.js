@@ -39,7 +39,7 @@ function findSaddlePoints(var_ante, var_bet, var_cardRange) {
         }
         nextstrat(pure1);
     }
-    console.log("done");
+    console.log(`Done calculating saddle points for ${ante}, ${bet}, ${cardRange}`);
     return saddlePoints;
 }
 
