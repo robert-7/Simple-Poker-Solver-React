@@ -3,7 +3,7 @@ import { matrixToString } from './saddlePointUtils';
 /**
  * Base implementation for saddle point finding algorithms.
  * Provides common functionality for both Borelish and PSP strategies.
- * 
+ *
  * @param {Function} valueCalculator - Function that calculates value based on strategy
  *        Signature: (strat1, strat2, ante, bet, cardRange) => number
  */
@@ -47,13 +47,13 @@ function createSaddlePointFinder(valueCalculator) {
             }
             nextstrat(pure1);
         }
-        
+
         if (logPrefix) {
             console.log(`${logPrefix} ${ante}, ${bet}, ${cardRange}`);
         } else {
             console.log("done");
         }
-        
+
         return saddlePoints;
     }
 
