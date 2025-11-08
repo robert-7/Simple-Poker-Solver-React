@@ -6,8 +6,8 @@ A program written in Javascript used to find the saddle points of a simplified p
 
 Note, there are two pages here, one for each version of a Simplfied Poker Game:
 
-* Borel's Simplified Poker Game (1938)
-* Von Neumann's Simplified Poker Game (1947)
+- Borel's Simplified Poker Game (1938)
+- Von Neumann's Simplified Poker Game (1947)
 
 Note: There have been many variations of a Simplified Poker game. However, we simply focus on these two simplest
 forms.
@@ -16,24 +16,24 @@ forms.
 
 Among the two games, there are some common rules:
 
-* There are 2 players (denoted P1 and P2)
-* Players are given a number `[0,1] ∈ R` which is referred to as "their hand"
-* P1 plays first, where they can perform one of two actions
-* P2 plays second, where they can respond with one of two actions
-* The ante is `A=1` unit and the bet is `B` units
-* If one player folds the other receives the ante from the other
-* If both players have bet/called, the highest valued hand wins the `A + B` from the opposing player
+- There are 2 players (denoted P1 and P2)
+- Players are given a number `[0,1] ∈ R` which is referred to as "their hand"
+- P1 plays first, where they can perform one of two actions
+- P2 plays second, where they can respond with one of two actions
+- The ante is `A=1` unit and the bet is `B` units
+- If one player folds the other receives the ante from the other
+- If both players have bet/called, the highest valued hand wins the `A + B` from the opposing player
 
 In practise, we're more interested in a scenario where cards are given, instead of a random number. Therefore:
 
-* Players are given a number `x ∈ [1, 2, ..., n]` which is referred to as "their hand"
+- Players are given a number `x ∈ [1, 2, ..., n]` which is referred to as "their hand"
 
 ### Borel's Simplified Poker Game (1938)
 
 This version of the game has the player options listed below:
 
-* P1's options are bet or fold
-* P2's options are call or fold
+- P1's options are bet or fold
+- P2's options are call or fold
 
 The game tree for this game can be seen below:
 
@@ -43,8 +43,8 @@ The game tree for this game can be seen below:
 
 This version of the game has the player options listed below:
 
-* P1's options are bet or check
-* P2's options are call or fold
+- P1's options are bet or check
+- P2's options are call or fold
 
 The game tree for this game can be seen below:
 
@@ -57,6 +57,6 @@ of 0s and 1s, where a 0 indicates to check/fold if given the card, and a 1 indic
 
 ## Relevant Readings
 
-* [Bluffing and Betting Behavior in a Simplified Poker Game, Darryl A. Seale* and Steven E. Phelan](https://drive.google.com/file/d/0B305za0bQ_wWcF9qTWRsa2ppS0E/view?usp=sharing&resourcekey=0-tVM4i_DOkr6ZCIQJ88PeZQ)
-* [Game Theory Tuesdays – Von Neumann Poker, Presh Talwalker](https://mindyourdecisions.com/blog/2015/01/20/game-theory-tuesdays-von-neumann-poker/)
-* [On the Borel and von Neumann Poker Models, Chris Ferguson and Thomas S. Ferguson](https://chrissnijders.com/eth/Ferguson.pdf)
+- [Bluffing and Betting Behavior in a Simplified Poker Game, Darryl A. Seale\* and Steven E. Phelan](https://drive.google.com/file/d/0B305za0bQ_wWcF9qTWRsa2ppS0E/view?usp=sharing&resourcekey=0-tVM4i_DOkr6ZCIQJ88PeZQ)
+- [Game Theory Tuesdays – Von Neumann Poker, Presh Talwalker](https://mindyourdecisions.com/blog/2015/01/20/game-theory-tuesdays-von-neumann-poker/)
+- [On the Borel and von Neumann Poker Models, Chris Ferguson and Thomas S. Ferguson](https://chrissnijders.com/eth/Ferguson.pdf)

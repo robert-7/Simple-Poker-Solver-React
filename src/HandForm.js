@@ -37,22 +37,23 @@ class HandForm extends React.Component {
 
     // Choose the appropriate algorithm based on the radio button selection
     // algorithm: 1 = Borel, 2 = von Neumann
-    const findSaddlePoints = this.state.algorithm === 1
-      ? findSaddlePointsBorel
-      : findSaddlePointsVonNeumann;
+    const findSaddlePoints =
+      this.state.algorithm === 1
+        ? findSaddlePointsBorel
+        : findSaddlePointsVonNeumann;
 
     // Call findSaddlePoints with the current state values
     const saddlePoints = findSaddlePoints(
       this.state.anteValue,
       this.state.betValue,
-      this.state.numCards
+      this.state.numCards,
     );
 
     // Transform the results to match the table format
     const formattedResults = saddlePoints.map((point) => ({
       p1: point["%PURE1%"],
       p2: point["%PURE2%"],
-      p1payoff: point["%VALUE%"]
+      p1payoff: point["%VALUE%"],
     }));
 
     // Update the state with the new results
