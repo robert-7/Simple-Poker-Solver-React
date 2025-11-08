@@ -1,0 +1,1 @@
+Create a 512x512 image for a Simplified Poker Solver app. Use a minimalist design and a green background. Use a poker chip.
