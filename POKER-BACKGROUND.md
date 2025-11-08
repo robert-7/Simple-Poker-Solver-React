@@ -52,11 +52,11 @@ The game tree for this game can be seen below:
 
 ## How to Use the Solver
 
-To view the solver for a Borel game, open [borelish-ui.html](borelish-ui.html) (not sure if working).
-To view the solver for a von Neumann game, open [psp-ui.html](psp-ui.html).
 Example values for a game are `Ante` = 1, `Bet` = 2, and `# of Cards` = 7. The results will display as a list
 of 0s and 1s, where a 0 indicates to check/fold if given the card, and a 1 indicates to bet/call given that card.
 
 ## Relevant Readings
 
 * [Bluffing and Betting Behavior in a Simplified Poker Game, Darryl A. Seale* and Steven E. Phelan](https://drive.google.com/file/d/0B305za0bQ_wWcF9qTWRsa2ppS0E/view?usp=sharing&resourcekey=0-tVM4i_DOkr6ZCIQJ88PeZQ)
+* [Game Theory Tuesdays – Von Neumann Poker, Presh Talwalker](https://mindyourdecisions.com/blog/2015/01/20/game-theory-tuesdays-von-neumann-poker/)
+* [On the Borel and von Neumann Poker Models, Chris Ferguson and Thomas S. Ferguson](https://chrissnijders.com/eth/Ferguson.pdf)

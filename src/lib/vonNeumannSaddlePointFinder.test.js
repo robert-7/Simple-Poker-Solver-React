@@ -1,6 +1,6 @@
-import { findSaddlePoints } from './pspSaddlePointFinder';
+import { findSaddlePoints } from './vonNeumannSaddlePointFinder';
 
-describe('pspSaddlePointFinder', () => {
+describe('vonNeumannSaddlePointFinder', () => {
   describe('findSaddlePoints', () => {
     test('should return an array of saddle points', () => {
       const result = findSaddlePoints(1, 2, 3);

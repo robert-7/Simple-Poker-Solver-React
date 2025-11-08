@@ -23,9 +23,9 @@ const results = findSaddlePoints(anteValue, betValue, numCards);
 // Returns array of saddle points with strategies for both players
 ```
 
-### `pspSaddlePointFinder.js`
+### `vonNeumannSaddlePointFinder.js`
 
-Implements the saddle point finding algorithm for **von Neumann's Simplified Poker Game (1947)**.
+Implements the saddle point finding algorithm for **Von Neumann's Simplified Poker Game (1947)**.
 
 **Game Rules:**
 
@@ -36,7 +36,7 @@ Implements the saddle point finding algorithm for **von Neumann's Simplified Pok
 **Usage:**
 
 ```javascript
-import { findSaddlePoints } from './lib/pspSaddlePointFinder';
+import { findSaddlePoints } from './lib/vonNeumannSaddlePointFinder';
 
 const results = findSaddlePoints(anteValue, betValue, numCards);
 // Returns array of saddle points with strategies for both players

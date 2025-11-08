@@ -2,7 +2,7 @@ import { matrixToString } from './saddlePointUtils';
 
 /**
  * Base implementation for saddle point finding algorithms.
- * Provides common functionality for both Borelish and PSP strategies.
+ * Provides common functionality for both Borelish and von Neumann strategies.
  *
  * @param {Function} valueCalculator - Function that calculates value based on strategy
  *        Signature: (strat1, strat2, ante, bet, cardRange) => number

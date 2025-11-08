@@ -1,7 +1,7 @@
 import { createSaddlePointFinder } from './saddlePointFinderBase';
 
 /**
- * PSP (von Neumann) version value calculator
+ * von Neumann version value calculator
  * When folding, considers card strength - gains ante if card is stronger, loses ante if weaker
  */
 function pspValueCalculator(strat1, strat2, ante, bet, cardRange) {
