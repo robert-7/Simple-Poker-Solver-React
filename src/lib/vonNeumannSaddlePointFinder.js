@@ -1,17 +1,20 @@
 import { createSaddlePointFinder } from "./saddlePointFinderBase";
 
 /**
- * Borel version value calculator
- * When folding, always subtracts ante regardless of card strength
+ * Von Neumann version value calculator
+ * When folding, considers card strength - gains ante if card is stronger, loses ante if weaker
  */
-function borelValueCalculator(strat1, strat2, ante, bet, cardRange) {
+function vonNeumannValueCalculator(strat1, strat2, ante, bet, cardRange) {
   let temp = 0;
   for (let i = 0; i < cardRange; i++) {
     for (let j = 0; j < cardRange; j++) {
       if (i !== j) {
         if (strat1[i] === 0) {
-          // Borel version: always subtract ante when folding
-          temp = temp - ante;
+          if (i > j) {
+            temp = temp + ante;
+          } else {
+            temp = temp - ante;
+          }
         }
 
         if (strat1[i] === 1) {
@@ -32,6 +35,15 @@ function borelValueCalculator(strat1, strat2, ante, bet, cardRange) {
   return temp / (Math.pow(cardRange, 2) - cardRange);
 }
 
-const { findSaddlePoints } = createSaddlePointFinder(borelValueCalculator);
+const finderBase = createSaddlePointFinder(vonNeumannValueCalculator);
+
+function findSaddlePoints(var_ante, var_bet, var_cardRange) {
+  return finderBase.findSaddlePoints(
+    var_ante,
+    var_bet,
+    var_cardRange,
+    "Done calculating saddle points for",
+  );
+}
 
 export { findSaddlePoints };
