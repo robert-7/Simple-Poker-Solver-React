@@ -1,3 +1,5 @@
+import { matrixToString } from './saddlePointUtils';
+
 // Module-scoped variables
 let ante, bet, cardRange, vMatrix;
 
@@ -7,6 +9,9 @@ function findSaddlePoints(var_ante, var_bet, var_cardRange) {
     cardRange = parseInt(var_cardRange);
 
     vMatrix = valueMatrix();
+
+    const matrixStr = matrixToString(vMatrix);
+    console.log(matrixStr);
 
     let pure1 = newStrat();
 

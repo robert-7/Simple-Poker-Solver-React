@@ -4,8 +4,8 @@ import { Form } from "react-bootstrap";
 import { ToggleButton } from "react-bootstrap";
 import { ToggleButtonGroup } from "react-bootstrap";
 import { Table } from "react-bootstrap";
-import { findSaddlePoints as findSaddlePointsBorel } from "./borelishSaddlePointFinder";
-import { findSaddlePoints as findSaddlePointsPSP } from "./pspSaddlePointFinder";
+import { findSaddlePoints as findSaddlePointsBorel } from "./lib/borelishSaddlePointFinder";
+import { findSaddlePoints as findSaddlePointsPSP } from "./lib/pspSaddlePointFinder";
 
 class HandForm extends React.Component {
   constructor(props) {
