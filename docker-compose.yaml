@@ -1,0 +1,7 @@
+services:
+  poker-solver:
+    build: .
+    ports:
+      - "8080:80"
+    container_name: simple-poker-solver
+    restart: unless-stopped
