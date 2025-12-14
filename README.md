@@ -27,6 +27,21 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
+## Docker
+
+You can also run this application using Docker.
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+### Running with Docker Compose
+
+1. Build and start the container: `docker compose up -d --build`
+1. Open [http://localhost:8080](http://localhost:8080) in your browser.
+1. To stop the container: `docker compose down`
+
 ## Learn More
 
 You can learn more in the [Vite documentation](https://vitejs.dev/guide/).
