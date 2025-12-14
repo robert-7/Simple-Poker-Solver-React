@@ -36,11 +36,11 @@ class HandForm extends React.Component {
     event.preventDefault();
 
     // Choose the appropriate algorithm based on the radio button selection
-    // algorithm: 1 = Borel, 2 = von Neumann
+    // algorithm: 1 = von Neumann, 2 = Borel
     const findSaddlePoints =
       this.state.algorithm === 1
-        ? findSaddlePointsBorel
-        : findSaddlePointsVonNeumann;
+        ? findSaddlePointsVonNeumann
+        : findSaddlePointsBorel;
 
     // Call findSaddlePoints with the current state values
     const saddlePoints = findSaddlePoints(
@@ -94,10 +94,10 @@ class HandForm extends React.Component {
                 onChange={this.setRadioValue}
               >
                 <ToggleButton id="tbg-radio-1" value={1}>
-                  Borel (Currently Unavailable)
+                  von Neumann
                 </ToggleButton>
                 <ToggleButton id="tbg-radio-2" value={2}>
-                  von Neumann
+                  Borel (Currently Unavailable)
                 </ToggleButton>
               </ToggleButtonGroup>
             </Form.Group>
