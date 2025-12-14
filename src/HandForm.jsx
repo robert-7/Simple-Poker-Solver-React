@@ -12,9 +12,9 @@ class HandForm extends React.Component {
     super(props);
     this.state = {
       algorithm: 1,
-      anteValue: 0,
-      betValue: 0,
-      numCards: 0,
+      anteValue: 1,
+      betValue: 2,
+      numCards: 7,
       results: [
         {
           key: "unique row key",
@@ -106,7 +106,7 @@ class HandForm extends React.Component {
               <Form.Label>Ante Value:</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="0"
+                placeholder="1"
                 onChange={this.setAnteValue}
               />
             </Form.Group>
@@ -114,7 +114,7 @@ class HandForm extends React.Component {
               <Form.Label>Bet Value:</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="0"
+                placeholder="2"
                 onChange={this.setBetValue}
               />
             </Form.Group>
@@ -122,7 +122,7 @@ class HandForm extends React.Component {
               <Form.Label>Number of Cards In Deck:</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="0"
+                placeholder="7"
                 onChange={this.setNumCards}
               />
             </Form.Group>
