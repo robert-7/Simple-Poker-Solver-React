@@ -16,7 +16,8 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test:coverage": "vitest --run --coverage"
   },
   "eslintConfig": {
     "extends": [
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/coverage-v8": "^4.0.18",
     "jsdom": "^27.3.0",
     "vite": "^7.2.7",
     "vitest": "^4.0.15"
