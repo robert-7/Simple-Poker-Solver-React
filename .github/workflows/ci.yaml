@@ -49,3 +49,29 @@ jobs:
         run: npm ci
       - name: Build production bundle
         run: npm run build
+
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build and start containers
+        run: docker compose up --build -d
+      - name: Wait for HTTP endpoint
+        run: |
+          for i in {1..30}; do
+            if curl --fail --silent --show-error http://localhost:8080 > /dev/null; then
+              echo "Smoke check passed"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Smoke check failed: endpoint not ready after 30 seconds"
+          exit 1
+      - name: Show container status and logs on failure
+        if: failure()
+        run: |
+          docker compose ps
+          docker compose logs --tail=200
+      - name: Teardown containers
+        if: always()
+        run: docker compose down -v
