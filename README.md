@@ -2,51 +2,22 @@
 
 ![Simplified Poker Solver logo](public/logo192.png)
 
-Interactive React app that computes saddle points for classic simplified poker variants. Enter ante, bet, and deck size to compare the von Neumann and Borel strategy solvers and inspect the optimal betting decisions in the results table.
+Interactive React app that computes saddle points for classic simplified poker variants. Enter ante, bet, and deck size to compare the von Neumann and Borel strategy solvers and inspect the optimal betting decisions in the results table. Refer to the [POKER-BACKGROUND.md](POKER-BACKGROUND.md) file for more information.
 
 This project uses [Vite](https://vitejs.dev/).
 
-## Project Media
-
-### Game Trees
-
-![von Neumann game tree](images/game-tree-for-von-neumann-game.png)
-
-![Borel game tree](images/game-tree-for-borel-game.png)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-### `npm test`
-
-Launches the test runner (Vitest) in the interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-## Docker
+## Bringing up the application
 
 You can also run this application using Docker.
 
-### Prerequisites
+### Docker Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### Running with Docker Compose
 
-1. Build and start the container: `docker compose up -d --build`
+1. Build/Rebuild and start the container: `docker compose up -d --build`
 1. Open [http://localhost:8080](http://localhost:8080) in your browser.
 1. To stop the container: `docker compose down`
 
