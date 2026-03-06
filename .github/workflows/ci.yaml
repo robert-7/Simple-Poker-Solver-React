@@ -1,0 +1,121 @@
+---
+name: ci
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - name: Install npm dependencies
+        run: npm ci
+      - uses: pre-commit/action@v3.0.1
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests with coverage thresholds
+        run: npm run test:coverage
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build production bundle
+        run: npm run build
+
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build and start containers
+        run: docker compose up --build -d
+      - name: Wait for container health
+        run: |
+          for i in {1..60}; do
+            container_id="$(docker compose ps -q poker-solver)"
+            if [ -z "$container_id" ]; then
+              sleep 1
+              continue
+            fi
+
+            health_status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id")"
+
+            if [ "$health_status" = "healthy" ]; then
+              echo "Container is healthy"
+              exit 0
+            fi
+
+            if [ "$health_status" = "unhealthy" ]; then
+              echo "Container is unhealthy"
+              docker compose logs --tail=200
+              exit 1
+            fi
+
+            sleep 1
+          done
+
+          echo "Timed out waiting for container health"
+          docker compose ps
+          docker compose logs --tail=200
+          exit 1
+      - name: Wait for and verify app response
+        run: |
+          for i in {1..30}; do
+            code="$(curl -sS -o /tmp/smoke.html -D /tmp/smoke.headers -w '%{http_code}' http://localhost:8080 || true)"
+            if [ "$code" = "200" ] && \
+               grep -qi '^content-type:.*text/html' /tmp/smoke.headers && \
+               grep -q '<title>Simplified Poker Solver</title>' /tmp/smoke.html && \
+               grep -q '<div id="root"></div>' /tmp/smoke.html; then
+              echo "Smoke check passed"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Smoke check failed: app page did not match expected content within 30 seconds"
+          echo "Last headers:"
+          cat /tmp/smoke.headers || true
+          echo "Last body (first 120 lines):"
+          sed -n '1,120p' /tmp/smoke.html || true
+          exit 1
+      - name: Show container status and logs on failure
+        if: failure()
+        run: |
+          docker compose ps
+          docker compose logs --tail=200
+      - name: Teardown containers
+        if: always()
+        run: docker compose down -v

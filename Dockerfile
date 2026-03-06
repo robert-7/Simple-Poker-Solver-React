@@ -19,6 +19,10 @@ FROM nginx:alpine
 # Copy the build output from the previous stage to the Nginx html directory
 COPY --from=build /app/build /usr/share/nginx/html
 
+# Mark the container healthy only when nginx is serving content.
+HEALTHCHECK --interval=10s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget -q -O /dev/null http://localhost/ || exit 1
+
 # Expose port 80
 EXPOSE 80
 
