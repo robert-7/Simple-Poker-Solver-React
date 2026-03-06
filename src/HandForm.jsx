@@ -145,10 +145,11 @@ class HandForm extends React.Component {
     const resultSummary = hasResults
       ? `${this.state.results.length} strategy profile${this.state.results.length === 1 ? "" : "s"} generated.`
       : "No results yet.";
+    const statusMessageId = "solver-status-message";
 
     return (
       <section className="solver-grid" aria-label="Solver controls and results">
-        <section id="options" className="surface-card">
+        <section id="options" className="surface-card reveal-in">
           <header className="section-header">
             <h2 className="section-title">Game Setup</h2>
             <p className="section-subtitle">
@@ -253,12 +254,21 @@ class HandForm extends React.Component {
               className="solve-button"
               type="submit"
               disabled={!isFormValid || this.state.isCalculating}
+              aria-describedby={
+                this.state.isCalculating ? statusMessageId : undefined
+              }
             >
               {this.state.isCalculating ? "Calculating..." : "Run Solver"}
             </Button>
 
             {this.state.isCalculating && (
-              <p className="solver-status" role="status" aria-live="polite">
+              <p
+                id={statusMessageId}
+                className="solver-status"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              >
                 Running solver, please wait...
               </p>
             )}
@@ -267,7 +277,7 @@ class HandForm extends React.Component {
 
         <section
           id="results"
-          className="surface-card"
+          className="surface-card reveal-in"
           aria-busy={this.state.isCalculating}
         >
           <header className="section-header">
@@ -275,7 +285,7 @@ class HandForm extends React.Component {
             <p className="section-subtitle">
               Strategy profiles and expected payoff from the selected setup.
             </p>
-            <p className="results-meta" aria-live="polite">
+            <p className="results-meta" aria-live="polite" aria-atomic="true">
               {resultSummary}
             </p>
           </header>

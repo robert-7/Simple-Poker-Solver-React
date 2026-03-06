@@ -26,6 +26,33 @@
   margin: 0 auto;
 }
 
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -56px;
+  z-index: 100;
+  background: var(--accent-ink);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: top 160ms ease;
+}
+
+.skip-link:focus-visible {
+  top: 12px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible,
+[role="radio"]:focus-visible {
+  outline: 3px solid rgba(31, 122, 75, 0.45);
+  outline-offset: 2px;
+}
+
 .hero-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -70,6 +97,14 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   padding: clamp(14px, 2.2vw, 18px);
+}
+
+.reveal-in {
+  animation: rise-in 280ms ease-out both;
+}
+
+.solver-grid .surface-card:nth-child(2) {
+  animation-delay: 80ms;
 }
 
 .section-header {
@@ -207,9 +242,14 @@
 
 .results-table {
   margin: 0;
-  min-width: 640px;
+  min-width: 540px;
   border-collapse: collapse;
   overflow: hidden;
+}
+
+.results-table th,
+.results-table td {
+  padding-inline: 0.25rem;
 }
 
 .results-table thead th {
@@ -219,7 +259,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .results-table tbody tr {
@@ -227,6 +267,10 @@
 }
 
 .results-table tbody tr:hover {
+  background: var(--surface-muted);
+}
+
+.results-table tbody tr:focus-within {
   background: var(--surface-muted);
 }
 
@@ -264,6 +308,39 @@
   border: 0;
 }
 
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-in {
+    animation: none;
+  }
+
+  .solve-button:hover,
+  .solve-button:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
 @media (max-width: 640px) {
   .hero-title {
     line-height: 1.1;
@@ -278,6 +355,6 @@
   }
 
   .results-table {
-    min-width: 560px;
+    min-width: 520px;
   }
 }

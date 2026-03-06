@@ -6,6 +6,14 @@ Interactive React app that computes saddle points for classic simplified poker v
 
 This project uses [Vite](https://vitejs.dev/).
 
+## Project Media
+
+### Game Trees
+
+![von Neumann game tree](images/game-tree-for-von-neumann-game.png)
+
+![Borel game tree](images/game-tree-for-borel-game.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
