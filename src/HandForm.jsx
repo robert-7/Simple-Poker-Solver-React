@@ -4,10 +4,10 @@ import { Form } from "react-bootstrap";
 import { ToggleButton } from "react-bootstrap";
 import { ToggleButtonGroup } from "react-bootstrap";
 import { Table } from "react-bootstrap";
-import { findSaddlePoints as findSaddlePointsBorel } from "./lib/borelishSaddlePointFinder";
 import { findSaddlePoints as findSaddlePointsVonNeumann } from "./lib/vonNeumannSaddlePointFinder";
 
 const MAX_DECK_SIZE = 10;
+const SUPPORTED_ALGORITHM = 1;
 
 class HandForm extends React.Component {
   constructor(props) {
@@ -34,6 +34,11 @@ class HandForm extends React.Component {
 
     const validationErrors = this.getValidationErrors();
 
+    if (validationErrors.algorithm) {
+      this.setState({ calcError: validationErrors.algorithm });
+      return;
+    }
+
     if (Object.keys(validationErrors).length > 0 || this.state.isCalculating) {
       return;
     }
@@ -46,14 +51,11 @@ class HandForm extends React.Component {
       // Yield once so the loading state renders before heavy solver work.
       window.setTimeout(() => {
         try {
-          // Choose the appropriate algorithm based on the radio button selection
-          // algorithm: 1 = von Neumann, 2 = Borel
-          const findSaddlePoints =
-            this.state.algorithm === 1
-              ? findSaddlePointsVonNeumann
-              : findSaddlePointsBorel;
-
-          const saddlePoints = findSaddlePoints(anteValue, betValue, numCards);
+          const saddlePoints = findSaddlePointsVonNeumann(
+            anteValue,
+            betValue,
+            numCards,
+          );
 
           const formattedResults = saddlePoints.map((point) => ({
             p1: point["%PURE1%"],
@@ -78,6 +80,11 @@ class HandForm extends React.Component {
     const anteValue = Number(this.state.anteValue);
     const betValue = Number(this.state.betValue);
     const numCards = Number(this.state.numCards);
+
+    if (this.state.algorithm !== SUPPORTED_ALGORITHM) {
+      errors.algorithm =
+        "Borel is currently unavailable. Please use von Neumann.";
+    }
 
     if (!Number.isFinite(anteValue) || anteValue <= 0) {
       errors.anteValue = "Ante must be greater than 0.";
@@ -108,6 +115,14 @@ class HandForm extends React.Component {
   }
 
   setRadioValue(value) {
+    if (value !== SUPPORTED_ALGORITHM) {
+      this.setState({
+        algorithm: SUPPORTED_ALGORITHM,
+        calcError: "Borel is currently unavailable. Please use von Neumann.",
+      });
+      return;
+    }
+
     this.setState({ algorithm: value, calcError: "" });
   }
 
@@ -154,7 +169,7 @@ class HandForm extends React.Component {
                 >
                   <ToggleButton
                     id="tbg-radio-1"
-                    value={1}
+                    value={SUPPORTED_ALGORITHM}
                     variant="outline-success"
                     disabled={this.state.isCalculating}
                   >
@@ -164,11 +179,14 @@ class HandForm extends React.Component {
                     id="tbg-radio-2"
                     value={2}
                     variant="outline-secondary"
-                    disabled={this.state.isCalculating}
+                    disabled={true}
                   >
                     Borel (Currently Unavailable)
                   </ToggleButton>
                 </ToggleButtonGroup>
+                <Form.Text className="field-hint">
+                  Borel will be enabled once implementation is complete.
+                </Form.Text>
               </fieldset>
             </Form.Group>
 
