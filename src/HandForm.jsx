@@ -7,6 +7,8 @@ import { Table } from "react-bootstrap";
 import { findSaddlePoints as findSaddlePointsBorel } from "./lib/borelishSaddlePointFinder";
 import { findSaddlePoints as findSaddlePointsVonNeumann } from "./lib/vonNeumannSaddlePointFinder";
 
+const MAX_DECK_SIZE = 10;
+
 class HandForm extends React.Component {
   constructor(props) {
     super(props);
@@ -16,6 +18,8 @@ class HandForm extends React.Component {
       betValue: 2,
       numCards: 7,
       results: [],
+      isCalculating: false,
+      calcError: "",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,29 +32,79 @@ class HandForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    // Choose the appropriate algorithm based on the radio button selection
-    // algorithm: 1 = von Neumann, 2 = Borel
-    const findSaddlePoints =
-      this.state.algorithm === 1
-        ? findSaddlePointsVonNeumann
-        : findSaddlePointsBorel;
+    const validationErrors = this.getValidationErrors();
 
-    // Call findSaddlePoints with the current state values
-    const saddlePoints = findSaddlePoints(
-      this.state.anteValue,
-      this.state.betValue,
-      this.state.numCards,
-    );
+    if (Object.keys(validationErrors).length > 0 || this.state.isCalculating) {
+      return;
+    }
 
-    // Transform the results to match the table format
-    const formattedResults = saddlePoints.map((point) => ({
-      p1: point["%PURE1%"],
-      p2: point["%PURE2%"],
-      p1payoff: point["%VALUE%"],
-    }));
+    const anteValue = Number(this.state.anteValue);
+    const betValue = Number(this.state.betValue);
+    const numCards = Number(this.state.numCards);
 
-    // Update the state with the new results
-    this.setState({ results: formattedResults });
+    this.setState({ isCalculating: true, calcError: "" }, () => {
+      // Yield once so the loading state renders before heavy solver work.
+      window.setTimeout(() => {
+        try {
+          // Choose the appropriate algorithm based on the radio button selection
+          // algorithm: 1 = von Neumann, 2 = Borel
+          const findSaddlePoints =
+            this.state.algorithm === 1
+              ? findSaddlePointsVonNeumann
+              : findSaddlePointsBorel;
+
+          const saddlePoints = findSaddlePoints(anteValue, betValue, numCards);
+
+          const formattedResults = saddlePoints.map((point) => ({
+            p1: point["%PURE1%"],
+            p2: point["%PURE2%"],
+            p1payoff: this.formatPayoff(point["%VALUE%"]),
+          }));
+
+          this.setState({ results: formattedResults, isCalculating: false });
+        } catch (error) {
+          this.setState({
+            calcError:
+              "Calculation failed. Please verify your inputs and try again.",
+            isCalculating: false,
+          });
+        }
+      }, 0);
+    });
+  }
+
+  getValidationErrors() {
+    const errors = {};
+    const anteValue = Number(this.state.anteValue);
+    const betValue = Number(this.state.betValue);
+    const numCards = Number(this.state.numCards);
+
+    if (!Number.isFinite(anteValue) || anteValue <= 0) {
+      errors.anteValue = "Ante must be greater than 0.";
+    }
+
+    if (!Number.isFinite(betValue) || betValue <= 0) {
+      errors.betValue = "Bet must be greater than 0.";
+    }
+
+    if (!Number.isInteger(numCards) || numCards <= 0) {
+      errors.numCards = "Deck size must be a positive whole number.";
+    } else if (numCards > MAX_DECK_SIZE) {
+      errors.numCards = `Deck size must be ${MAX_DECK_SIZE} or less for responsive performance.`;
+    }
+
+    return errors;
+  }
+
+  formatPayoff(value) {
+    const numericValue = Number(value);
+
+    if (!Number.isFinite(numericValue)) {
+      return String(value);
+    }
+
+    const truncatedValue = Math.trunc(numericValue * 1_000_000) / 1_000_000;
+    return truncatedValue.toFixed(6);
   }
 
   setRadioValue(value) {
@@ -70,6 +124,9 @@ class HandForm extends React.Component {
   }
 
   render() {
+    const validationErrors = this.getValidationErrors();
+    const isFormValid = Object.keys(validationErrors).length === 0;
+
     return (
       <section className="solver-grid" aria-label="Solver controls and results">
         <section id="options" className="surface-card">
@@ -115,9 +172,14 @@ class HandForm extends React.Component {
                 className="number-input"
                 type="number"
                 min="1"
+                step="any"
+                isInvalid={Boolean(validationErrors.anteValue)}
                 value={this.state.anteValue}
                 onChange={this.setAnteValue}
               />
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.anteValue}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group className="form-field" controlId="handform.Bet">
@@ -126,9 +188,14 @@ class HandForm extends React.Component {
                 className="number-input"
                 type="number"
                 min="1"
+                step="any"
+                isInvalid={Boolean(validationErrors.betValue)}
                 value={this.state.betValue}
                 onChange={this.setBetValue}
               />
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.betValue}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group className="form-field" controlId="handform.Deck">
@@ -139,18 +206,38 @@ class HandForm extends React.Component {
                 className="number-input"
                 type="number"
                 min="1"
+                max={MAX_DECK_SIZE}
+                step="1"
+                isInvalid={Boolean(validationErrors.numCards)}
                 value={this.state.numCards}
                 onChange={this.setNumCards}
               />
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.numCards}
+              </Form.Control.Feedback>
             </Form.Group>
 
-            <Button className="solve-button" type="submit">
-              Run Solver
+            <Button
+              className="solve-button"
+              type="submit"
+              disabled={!isFormValid || this.state.isCalculating}
+            >
+              {this.state.isCalculating ? "Calculating..." : "Run Solver"}
             </Button>
+
+            {this.state.isCalculating && (
+              <p className="solver-status" aria-live="polite">
+                Running solver, please wait...
+              </p>
+            )}
           </Form>
         </section>
 
-        <section id="results" className="surface-card">
+        <section
+          id="results"
+          className="surface-card"
+          aria-busy={this.state.isCalculating}
+        >
           <header className="section-header">
             <h2 className="section-title">Results</h2>
             <p className="section-subtitle">
@@ -158,32 +245,40 @@ class HandForm extends React.Component {
             </p>
           </header>
 
-          <Table className="results-table" responsive>
-            <thead>
-              <tr>
-                <th>Player 1 - Strategy</th>
-                <th>Player 2 - Strategy</th>
-                <th>Player 1 - Payoff</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.results.length === 0 && (
-                <tr>
-                  <td colSpan={3} className="empty-state-cell">
-                    Run the solver to see optimal strategy outputs.
-                  </td>
-                </tr>
-              )}
+          {this.state.calcError && (
+            <p className="calc-error" role="alert">
+              {this.state.calcError}
+            </p>
+          )}
 
-              {this.state.results.map((r, index) => (
-                <tr key={index}>
-                  <td className="strategy-cell">{r.p1}</td>
-                  <td className="strategy-cell">{r.p2}</td>
-                  <td className="payoff-cell">{r.p1payoff}</td>
+          <div className="results-table-wrapper">
+            <Table className="results-table">
+              <thead>
+                <tr>
+                  <th>Player 1 - Strategy</th>
+                  <th>Player 2 - Strategy</th>
+                  <th>Player 1 - Payoff</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {this.state.results.length === 0 && (
+                  <tr>
+                    <td colSpan={3} className="empty-state-cell">
+                      Run the solver to see optimal strategy outputs.
+                    </td>
+                  </tr>
+                )}
+
+                {this.state.results.map((r, index) => (
+                  <tr key={index}>
+                    <td className="strategy-cell">{r.p1}</td>
+                    <td className="strategy-cell">{r.p2}</td>
+                    <td className="payoff-cell">{r.p1payoff}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
         </section>
       </section>
     );

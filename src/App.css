@@ -127,6 +127,14 @@
   background: var(--surface);
 }
 
+.number-input.is-invalid {
+  border-color: #b33a2f;
+}
+
+.invalid-feedback {
+  font-size: 0.82rem;
+}
+
 .solve-button {
   border: 0;
   border-radius: 10px;
@@ -148,8 +156,35 @@
   box-shadow: 0 9px 18px rgba(31, 122, 75, 0.28);
 }
 
+.solve-button:disabled {
+  background: #88b49b;
+  color: #f4faf6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.solver-status {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.calc-error {
+  margin: 0 0 10px;
+  color: #b33a2f;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.results-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .results-table {
   margin: 0;
+  min-width: 640px;
   border-collapse: collapse;
   overflow: hidden;
 }
@@ -180,6 +215,7 @@
 .strategy-cell {
   font-family: "Courier New", Courier, monospace;
   font-size: 0.88rem;
+  white-space: nowrap;
 }
 
 .payoff-cell {
