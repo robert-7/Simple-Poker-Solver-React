@@ -6,7 +6,6 @@ function App() {
     <div className="app-shell">
       <main className="app-main" role="main">
         <section className="hero-card">
-          <span className="hero-pill">Solver Workspace</span>
           <h1 className="hero-title">Simplified Poker Game Solver</h1>
           <p className="hero-copy">
             Mathematics has been fascinated by poker. While games like Texas
