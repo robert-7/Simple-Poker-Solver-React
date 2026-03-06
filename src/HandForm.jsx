@@ -108,24 +108,28 @@ class HandForm extends React.Component {
   }
 
   setRadioValue(value) {
-    this.setState({ algorithm: value });
+    this.setState({ algorithm: value, calcError: "" });
   }
 
   setAnteValue(event) {
-    this.setState({ anteValue: event.target.value });
+    this.setState({ anteValue: event.target.value, calcError: "" });
   }
 
   setBetValue(event) {
-    this.setState({ betValue: event.target.value });
+    this.setState({ betValue: event.target.value, calcError: "" });
   }
 
   setNumCards(event) {
-    this.setState({ numCards: event.target.value });
+    this.setState({ numCards: event.target.value, calcError: "" });
   }
 
   render() {
     const validationErrors = this.getValidationErrors();
     const isFormValid = Object.keys(validationErrors).length === 0;
+    const hasResults = this.state.results.length > 0;
+    const resultSummary = hasResults
+      ? `${this.state.results.length} strategy profile${this.state.results.length === 1 ? "" : "s"} generated.`
+      : "No results yet.";
 
     return (
       <section className="solver-grid" aria-label="Solver controls and results">
@@ -139,31 +143,33 @@ class HandForm extends React.Component {
           </header>
           <Form onSubmit={this.handleSubmit} className="solver-form">
             <Form.Group className="form-field">
-              <Form.Label as="span" className="field-label">
-                Algorithm
-              </Form.Label>
-              <ToggleButtonGroup
-                className="algorithm-toggle"
-                name="games"
-                type="radio"
-                value={this.state.algorithm}
-                onChange={this.setRadioValue}
-              >
-                <ToggleButton
-                  id="tbg-radio-1"
-                  value={1}
-                  variant="outline-success"
+              <fieldset className="algorithm-fieldset">
+                <legend className="field-label">Algorithm</legend>
+                <ToggleButtonGroup
+                  className="algorithm-toggle"
+                  name="games"
+                  type="radio"
+                  value={this.state.algorithm}
+                  onChange={this.setRadioValue}
                 >
-                  von Neumann
-                </ToggleButton>
-                <ToggleButton
-                  id="tbg-radio-2"
-                  value={2}
-                  variant="outline-secondary"
-                >
-                  Borel (Currently Unavailable)
-                </ToggleButton>
-              </ToggleButtonGroup>
+                  <ToggleButton
+                    id="tbg-radio-1"
+                    value={1}
+                    variant="outline-success"
+                    disabled={this.state.isCalculating}
+                  >
+                    von Neumann
+                  </ToggleButton>
+                  <ToggleButton
+                    id="tbg-radio-2"
+                    value={2}
+                    variant="outline-secondary"
+                    disabled={this.state.isCalculating}
+                  >
+                    Borel (Currently Unavailable)
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </fieldset>
             </Form.Group>
 
             <Form.Group className="form-field" controlId="handform.Ante">
@@ -176,6 +182,7 @@ class HandForm extends React.Component {
                 isInvalid={Boolean(validationErrors.anteValue)}
                 value={this.state.anteValue}
                 onChange={this.setAnteValue}
+                disabled={this.state.isCalculating}
               />
               <Form.Control.Feedback type="invalid">
                 {validationErrors.anteValue}
@@ -192,6 +199,7 @@ class HandForm extends React.Component {
                 isInvalid={Boolean(validationErrors.betValue)}
                 value={this.state.betValue}
                 onChange={this.setBetValue}
+                disabled={this.state.isCalculating}
               />
               <Form.Control.Feedback type="invalid">
                 {validationErrors.betValue}
@@ -211,7 +219,13 @@ class HandForm extends React.Component {
                 isInvalid={Boolean(validationErrors.numCards)}
                 value={this.state.numCards}
                 onChange={this.setNumCards}
+                disabled={this.state.isCalculating}
+                aria-describedby="deck-size-hint"
               />
+              <Form.Text id="deck-size-hint" className="field-hint">
+                Deck sizes above {MAX_DECK_SIZE} are blocked to keep
+                calculations responsive.
+              </Form.Text>
               <Form.Control.Feedback type="invalid">
                 {validationErrors.numCards}
               </Form.Control.Feedback>
@@ -226,7 +240,7 @@ class HandForm extends React.Component {
             </Button>
 
             {this.state.isCalculating && (
-              <p className="solver-status" aria-live="polite">
+              <p className="solver-status" role="status" aria-live="polite">
                 Running solver, please wait...
               </p>
             )}
@@ -243,6 +257,9 @@ class HandForm extends React.Component {
             <p className="section-subtitle">
               Strategy profiles and expected payoff from the selected setup.
             </p>
+            <p className="results-meta" aria-live="polite">
+              {resultSummary}
+            </p>
           </header>
 
           {this.state.calcError && (
@@ -253,11 +270,14 @@ class HandForm extends React.Component {
 
           <div className="results-table-wrapper">
             <Table className="results-table">
+              <caption className="visually-hidden">
+                Computed player strategies and expected payoff.
+              </caption>
               <thead>
                 <tr>
-                  <th>Player 1 - Strategy</th>
-                  <th>Player 2 - Strategy</th>
-                  <th>Player 1 - Payoff</th>
+                  <th scope="col">Player 1 - Strategy</th>
+                  <th scope="col">Player 2 - Strategy</th>
+                  <th scope="col">Player 1 - Payoff</th>
                 </tr>
               </thead>
               <tbody>

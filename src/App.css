@@ -17,7 +17,8 @@
   min-height: 100vh;
   background: radial-gradient(circle at 8% 0%, #e8efe5 0%, transparent 42%),
     radial-gradient(circle at 92% 20%, #e1ece4 0%, transparent 36%), var(--bg);
-  padding: 28px 18px 48px;
+  padding: clamp(16px, 2.4vw, 28px) clamp(14px, 2vw, 18px)
+    clamp(24px, 5vw, 48px);
 }
 
 .app-main {
@@ -30,8 +31,8 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
-  padding: 24px;
-  margin-bottom: 18px;
+  padding: clamp(16px, 2.5vw, 24px);
+  margin-bottom: clamp(14px, 2.2vw, 18px);
 }
 
 .hero-title {
@@ -54,7 +55,7 @@
 
 .solver-grid {
   display: grid;
-  gap: 18px;
+  gap: clamp(12px, 2vw, 18px);
 }
 
 @media (min-width: 920px) {
@@ -68,11 +69,11 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
-  padding: 18px;
+  padding: clamp(14px, 2.2vw, 18px);
 }
 
 .section-header {
-  margin-bottom: 12px;
+  margin-bottom: clamp(10px, 1.8vw, 12px);
 }
 
 .section-title {
@@ -87,9 +88,15 @@
   font-size: 0.96rem;
 }
 
+.results-meta {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
 .solver-form {
   display: grid;
-  gap: 4px;
+  gap: 6px;
 }
 
 .form-field {
@@ -102,6 +109,18 @@
   margin-bottom: 6px;
 }
 
+.algorithm-fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.field-hint {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 .algorithm-toggle {
   display: flex;
   flex-wrap: wrap;
@@ -112,6 +131,10 @@
   border-radius: 10px;
   border-width: 1px;
   font-weight: 700;
+}
+
+.algorithm-toggle .btn:disabled {
+  opacity: 0.72;
 }
 
 .number-input {
@@ -227,4 +250,34 @@
   color: var(--muted);
   text-align: center;
   padding: 16px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    line-height: 1.1;
+  }
+
+  .solver-form {
+    gap: 8px;
+  }
+
+  .field-label {
+    margin-bottom: 4px;
+  }
+
+  .results-table {
+    min-width: 560px;
+  }
 }
