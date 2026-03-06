@@ -15,14 +15,7 @@ class HandForm extends React.Component {
       anteValue: 1,
       betValue: 2,
       numCards: 7,
-      results: [
-        {
-          key: "unique row key",
-          p1: "an",
-          p2: "example",
-          p1payoff: "row",
-        },
-      ],
+      results: [],
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -78,66 +71,94 @@ class HandForm extends React.Component {
 
   render() {
     return (
-      <section>
-        <section id="options" className="p-3">
-          <header>
-            <h2>Game</h2>
+      <section className="solver-grid" aria-label="Solver controls and results">
+        <section id="options" className="surface-card">
+          <header className="section-header">
+            <h2 className="section-title">Game Setup</h2>
+            <p className="section-subtitle">
+              Configure the game and run the solver to generate optimal
+              strategies.
+            </p>
           </header>
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Group className="mb-3" controlId="handform.Type">
-              <Form.Label>Game Type:</Form.Label>
-              <br />
+          <Form onSubmit={this.handleSubmit} className="solver-form">
+            <Form.Group className="form-field">
+              <Form.Label as="span" className="field-label">
+                Algorithm
+              </Form.Label>
               <ToggleButtonGroup
+                className="algorithm-toggle"
                 name="games"
                 type="radio"
                 value={this.state.algorithm}
                 onChange={this.setRadioValue}
               >
-                <ToggleButton id="tbg-radio-1" value={1}>
+                <ToggleButton
+                  id="tbg-radio-1"
+                  value={1}
+                  variant="outline-success"
+                >
                   von Neumann
                 </ToggleButton>
-                <ToggleButton id="tbg-radio-2" value={2}>
+                <ToggleButton
+                  id="tbg-radio-2"
+                  value={2}
+                  variant="outline-secondary"
+                >
                   Borel (Currently Unavailable)
                 </ToggleButton>
               </ToggleButtonGroup>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="handform.Ante">
-              <Form.Label>Ante Value:</Form.Label>
+            <Form.Group className="form-field" controlId="handform.Ante">
+              <Form.Label className="field-label">Ante Value</Form.Label>
               <Form.Control
+                className="number-input"
                 type="number"
-                placeholder="1"
+                min="1"
+                value={this.state.anteValue}
                 onChange={this.setAnteValue}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="handform.Bet">
-              <Form.Label>Bet Value:</Form.Label>
+
+            <Form.Group className="form-field" controlId="handform.Bet">
+              <Form.Label className="field-label">Bet Value</Form.Label>
               <Form.Control
+                className="number-input"
                 type="number"
-                placeholder="2"
+                min="1"
+                value={this.state.betValue}
                 onChange={this.setBetValue}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="handform.Deck">
-              <Form.Label>Number of Cards In Deck:</Form.Label>
+
+            <Form.Group className="form-field" controlId="handform.Deck">
+              <Form.Label className="field-label">
+                Number of Cards in Deck
+              </Form.Label>
               <Form.Control
+                className="number-input"
                 type="number"
-                placeholder="7"
+                min="1"
+                value={this.state.numCards}
                 onChange={this.setNumCards}
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
-              Submit
+            <Button className="solve-button" type="submit">
+              Run Solver
             </Button>
           </Form>
         </section>
 
-        <section id="results" className="p-3">
-          <header>
-            <h2 className="pb-2">Results</h2>
+        <section id="results" className="surface-card">
+          <header className="section-header">
+            <h2 className="section-title">Results</h2>
+            <p className="section-subtitle">
+              Strategy profiles and expected payoff from the selected setup.
+            </p>
           </header>
-          <Table striped bordered hover size="sm">
+
+          <Table className="results-table" responsive>
             <thead>
               <tr>
                 <th>Player 1 - Strategy</th>
@@ -146,11 +167,19 @@ class HandForm extends React.Component {
               </tr>
             </thead>
             <tbody>
+              {this.state.results.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="empty-state-cell">
+                    Run the solver to see optimal strategy outputs.
+                  </td>
+                </tr>
+              )}
+
               {this.state.results.map((r, index) => (
                 <tr key={index}>
-                  <td>{r.p1}</td>
-                  <td>{r.p2}</td>
-                  <td>{r.p1payoff}</td>
+                  <td className="strategy-cell">{r.p1}</td>
+                  <td className="strategy-cell">{r.p2}</td>
+                  <td className="payoff-cell">{r.p1payoff}</td>
                 </tr>
               ))}
             </tbody>
