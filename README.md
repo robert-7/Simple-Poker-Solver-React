@@ -2,7 +2,7 @@
 
 ![Simplified Poker Solver logo](public/logo192.png)
 
-Interactive React app that computes saddle points for classic simplified poker variants. Enter ante, bet, and deck size to compare the von Neumann and Borel strategy solvers and inspect the optimal betting decisions in the results table. Refer to the [POKER-BACKGROUND.md](POKER-BACKGROUND.md) file for more information.
+Interactive React app that computes saddle points for classic simplified poker variants. Enter ante, bet, and deck size to compare the von Neumann and Borel strategy solvers and inspect the optimal betting decisions in the results table. Refer to the [POKER-BACKGROUND.md](docs/POKER-BACKGROUND.md) file for more information.
 
 ## Bringing up the application
 
