@@ -4,8 +4,6 @@
 
 Interactive React app that computes saddle points for classic simplified poker variants. Enter ante, bet, and deck size to compare the von Neumann and Borel strategy solvers and inspect the optimal betting decisions in the results table. Refer to the [POKER-BACKGROUND.md](POKER-BACKGROUND.md) file for more information.
 
-This project uses [Vite](https://vitejs.dev/).
-
 ## Bringing up the application
 
 You can also run this application using Docker.
@@ -23,6 +21,6 @@ You can also run this application using Docker.
 
 ## Learn More
 
-You can learn more in the [Vite documentation](https://vitejs.dev/guide/).
+This project uses [Vite](https://vitejs.dev/). You can learn more in the [Vite documentation](https://vitejs.dev/guide/).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
