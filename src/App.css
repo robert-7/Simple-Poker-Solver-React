@@ -242,9 +242,14 @@ input:focus-visible,
 
 .results-table {
   margin: 0;
-  min-width: 640px;
+  min-width: 540px;
   border-collapse: collapse;
   overflow: hidden;
+}
+
+.results-table th,
+.results-table td {
+  padding-inline: 0.25rem;
 }
 
 .results-table thead th {
@@ -254,7 +259,7 @@ input:focus-visible,
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .results-table tbody tr {
@@ -350,6 +355,6 @@ input:focus-visible,
   }
 
   .results-table {
-    min-width: 560px;
+    min-width: 520px;
   }
 }
