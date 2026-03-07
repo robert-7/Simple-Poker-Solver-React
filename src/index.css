@@ -1,8 +1,13 @@
 body {
   margin: 0;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Segoe UI", sans-serif;
-  color: #162018;
-  background: #f4f6f2;
+  font-family:
+    "Inter",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  color: var(--text);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
